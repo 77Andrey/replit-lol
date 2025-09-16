@@ -1,0 +1,179 @@
+<!DOCTYPE html>
+<html lang="ru" data-bs-theme="dark">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Анализатор текста - Подсчет слов и символов</title>
+    
+    <!-- Bootstrap CSS with Replit dark theme -->
+    <link href="https://cdn.replit.com/agent/bootstrap-agent-dark-theme.min.css" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <!-- Custom CSS -->
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/custom.css') }}">
+</head>
+<body>
+    <div class="container mt-4 mb-5">
+        <!-- Header -->
+        <div class="row">
+            <div class="col-12">
+                <div class="text-center mb-4">
+                    <h1 class="display-4 mb-2">
+                        <i class="fas fa-text-width me-3"></i>
+                        Анализатор текста
+                    </h1>
+                    <p class="lead text-muted">
+                        Подсчет слов, символов и времени чтения текста
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Main Content -->
+        <div class="row">
+            <!-- Text Input Section -->
+            <div class="col-lg-8">
+                <div class="card h-100">
+                    <div class="card-header d-flex justify-content-between align-items-center">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-edit me-2"></i>
+                            Введите текст
+                        </h5>
+                        <button id="clearBtn" class="btn btn-outline-secondary btn-sm" title="Очистить текст">
+                            <i class="fas fa-trash-alt me-1"></i>
+                            Очистить
+                        </button>
+                    </div>
+                    <div class="card-body">
+                        <textarea 
+                            id="textInput" 
+                            class="form-control" 
+                            rows="15" 
+                            placeholder="Введите или вставьте ваш текст сюда для анализа..."
+                            style="resize: vertical; min-height: 300px;"
+                        ></textarea>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Statistics Section -->
+            <div class="col-lg-4">
+                <div class="card">
+                    <div class="card-header">
+                        <h5 class="card-title mb-0">
+                            <i class="fas fa-chart-line me-2"></i>
+                            Статистика
+                        </h5>
+                    </div>
+                    <div class="card-body">
+                        <!-- Characters with spaces -->
+                        <div class="stat-item mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="stat-label">
+                                    <i class="fas fa-font text-primary me-2"></i>
+                                    Символов (с пробелами)
+                                </span>
+                                <span id="charsWithSpaces" class="stat-value badge bg-primary">0</span>
+                            </div>
+                        </div>
+
+                        <!-- Characters without spaces -->
+                        <div class="stat-item mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="stat-label">
+                                    <i class="fas fa-font text-success me-2"></i>
+                                    Символов (без пробелов)
+                                </span>
+                                <span id="charsWithoutSpaces" class="stat-value badge bg-success">0</span>
+                            </div>
+                        </div>
+
+                        <!-- Words count -->
+                        <div class="stat-item mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="stat-label">
+                                    <i class="fas fa-list-ol text-info me-2"></i>
+                                    Количество слов
+                                </span>
+                                <span id="wordsCount" class="stat-value badge bg-info">0</span>
+                            </div>
+                        </div>
+
+                        <!-- Reading time -->
+                        <div class="stat-item mb-3">
+                            <div class="d-flex justify-content-between align-items-center">
+                                <span class="stat-label">
+                                    <i class="fas fa-clock text-warning me-2"></i>
+                                    Время чтения
+                                </span>
+                                <span id="readingTime" class="stat-value badge bg-warning text-dark">0 мин</span>
+                            </div>
+                        </div>
+
+                        <hr class="my-3">
+
+                        <!-- Additional Info -->
+                        <div class="text-muted small">
+                            <div class="mb-2">
+                                <i class="fas fa-info-circle me-1"></i>
+                                Расчет основан на среднем темпе чтения 200 слов в минуту
+                            </div>
+                            <div>
+                                <i class="fas fa-sync-alt me-1"></i>
+                                Статистика обновляется в реальном времени
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Additional Statistics Card -->
+                <div class="card mt-3">
+                    <div class="card-header">
+                        <h6 class="card-title mb-0">
+                            <i class="fas fa-chart-bar me-2"></i>
+                            Детали
+                        </h6>
+                    </div>
+                    <div class="card-body">
+                        <div class="row text-center">
+                            <div class="col-6">
+                                <div class="stat-detail">
+                                    <div class="stat-number" id="paragraphs">0</div>
+                                    <div class="stat-desc">Абзацы</div>
+                                </div>
+                            </div>
+                            <div class="col-6">
+                                <div class="stat-detail">
+                                    <div class="stat-number" id="sentences">0</div>
+                                    <div class="stat-desc">Предложения</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Footer -->
+        <div class="row mt-5">
+            <div class="col-12">
+                <footer class="text-center text-muted">
+                    <hr>
+                    <p class="mb-0">
+                        <i class="fas fa-code me-1"></i>
+                        Создано с использованием HTML, CSS и JavaScript
+                    </p>
+                </footer>
+            </div>
+        </div>
+    </div>
+
+    <!-- Bootstrap JS -->
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    
+    <!-- Custom JavaScript -->
+    <script src="{{ url_for('static', filename='js/text-analyzer.js') }}"></script>
+</body>
+</html>
